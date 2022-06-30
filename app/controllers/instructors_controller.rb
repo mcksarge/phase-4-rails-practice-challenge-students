@@ -14,6 +14,16 @@ class InstructorsController < ApplicationController
         end
     end
 
+    def update
+        instructor = Instructor.find_by(id: params[:id])
+        if instructor
+            instructor.update(instructor_params)
+            render json: instructor
+        else
+            render json: { errors: ["Instructor not found"] }, status: :not_found
+        end
+    end
+
     def create
         instructor = Instructor.create(instructor_params)
         if instructor.valid?
@@ -27,7 +37,7 @@ class InstructorsController < ApplicationController
         instructor = Instructor.find_by(id: params[:id])
         if instructor
             instructor.destroy
-            head: no_content
+            head :no_content
         else
             render json: { errors: ["Instructor not found"] }, status: :not_found
         end
